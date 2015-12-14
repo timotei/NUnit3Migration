@@ -12,13 +12,16 @@ namespace NUnit3Migration.Processors
             var root = editor.OriginalRoot;
             foreach (var node in root.DescendantNodes()
                 .OfType<AttributeSyntax>()
-                .Where(attribute => ((IdentifierNameSyntax)attribute.Name).Identifier.Text == "TestCase"))
+                .Where(attribute =>
+                    attribute.Name is IdentifierNameSyntax &&
+                    ((IdentifierNameSyntax)attribute.Name).Identifier.Text == "TestCase")
+                    )
             {
                 var resultArgument = node.ArgumentList.Arguments
                     .FirstOrDefault(a => a.NameEquals != null && a.NameEquals.Name.Identifier.Text == "Result");
                 if (resultArgument != null)
                 {
-                    var nameEquals = resultArgument.NameEquals.WithName(SyntaxFactory.IdentifierName("ExpectedResult"));
+                    var nameEquals = resultArgument.NameEquals.WithName(SyntaxFactory.IdentifierName("ExpectedResult "));
 
                     var newNode = resultArgument.WithNameEquals(nameEquals);
                     editor.ReplaceNode(resultArgument, newNode);
