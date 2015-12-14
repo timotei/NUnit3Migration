@@ -21,8 +21,6 @@ namespace NUnit3Migration.Processors
                     .FirstOrDefault(a => a.NameEquals != null && a.NameEquals.Name.Identifier.Text == "Result");
                 if (resultArgument != null)
                 {
-                   // var nameEquals = resultArgument.NameEquals.WithName(SyntaxFactory.IdentifierName("ExpectedResult "));
-
                     var identifierNameSyntax = resultArgument.NameEquals.Name;
                     var syntaxToken = SyntaxFactory.Identifier(
                         identifierNameSyntax.GetLeadingTrivia(),
