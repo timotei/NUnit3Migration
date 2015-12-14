@@ -21,10 +21,16 @@ namespace NUnit3Migration.Processors
                     .FirstOrDefault(a => a.NameEquals != null && a.NameEquals.Name.Identifier.Text == "Result");
                 if (resultArgument != null)
                 {
-                    var nameEquals = resultArgument.NameEquals.WithName(SyntaxFactory.IdentifierName("ExpectedResult "));
+                   // var nameEquals = resultArgument.NameEquals.WithName(SyntaxFactory.IdentifierName("ExpectedResult "));
 
-                    var newNode = resultArgument.WithNameEquals(nameEquals);
-                    editor.ReplaceNode(resultArgument, newNode);
+                    var identifierNameSyntax = resultArgument.NameEquals.Name;
+                    var syntaxToken = SyntaxFactory.Identifier(
+                        identifierNameSyntax.GetLeadingTrivia(),
+                        "ExpectedResult",
+                        identifierNameSyntax.GetTrailingTrivia());
+
+                    var newNode = identifierNameSyntax.WithIdentifier(syntaxToken);
+                    editor.ReplaceNode(identifierNameSyntax, newNode);
                 }
             }
         }
