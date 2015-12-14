@@ -2,6 +2,7 @@
 using Microsoft.CodeAnalysis.Editing;
 using Microsoft.CodeAnalysis.Text;
 using NUnit3Migration.Processors;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -13,7 +14,12 @@ namespace NUnit3Migration
     {
         private static void Main(string[] args)
         {
-            new Program().Run().Wait();
+            if (args.Length < 1)
+            {
+                Console.WriteLine("Need first argument a path to the directory in which to search recursively .cs files");
+                Environment.Exit(1);
+            }
+            new Program().Run(args[0]).Wait();
         }
 
         private readonly List<IProcessor> _syntaxNodeProcessors = new List<IProcessor>
@@ -21,14 +27,22 @@ namespace NUnit3Migration
             new TestCaseAttributeProcessor()
         };
 
-        private async Task Run()
+        private async Task Run(string path)
         {
-            string path = @"F:\src\ullink\git\ul-trader-extension\" +
-                          "desk/extension/test/legacy/ultrader.test/OrderEntryTests/ULOrderEntryFormBooksTests.cs";
+            foreach (var fsEntry in Directory.EnumerateFileSystemEntries(path))
+            {
+                if (Directory.Exists(fsEntry))
+                {
+                    await Run(fsEntry);
+                }
+                else if (".cs" == Path.GetExtension(fsEntry))
+                {
+                    Console.WriteLine($"Processing {fsEntry} ...");
+                    var originalStr = File.ReadAllText(fsEntry);
 
-            var originalStr = File.ReadAllText(path);
-
-            File.WriteAllText(path, await Process(_syntaxNodeProcessors, originalStr));
+                    File.WriteAllText(fsEntry, await Process(_syntaxNodeProcessors, originalStr));
+                }
+            }
         }
 
         public static async Task<string> Process(IEnumerable<IProcessor> processors, string inputSource)
