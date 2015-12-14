@@ -24,7 +24,8 @@ namespace NUnit3Migration
 
         private readonly List<IProcessor> _syntaxNodeProcessors = new List<IProcessor>
         {
-            new TestCaseAttributeProcessor()
+            new TestCaseAttributeProcessor(),
+            new AssertProcessor()
         };
 
         private async Task Run(string path)
