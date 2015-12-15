@@ -93,6 +93,7 @@
   <ItemGroup>
     <Compile Include="Processors\AssertProcessor.cs" />
     <Compile Include="Processors\ExpectedExceptionAttributeProcessor.cs" />
+    <Compile Include="Processors\IgnoreAttributeProcessor.cs" />
     <Compile Include="Processors\IProcessor.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

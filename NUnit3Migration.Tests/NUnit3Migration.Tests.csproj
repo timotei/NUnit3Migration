@@ -95,6 +95,7 @@
   <ItemGroup>
     <Compile Include="Processors\AssertProcessorTests.cs" />
     <Compile Include="Processors\ExpectedExceptionAttributeProcessorTests.cs" />
+    <Compile Include="Processors\IgnoreAttributeProcessorTests.cs" />
     <Compile Include="Processors\TestCaseAttributeProcessorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
