@@ -9,8 +9,7 @@ namespace NUnit3Migration.Processors
     {
         public void Process(DocumentEditor editor)
         {
-            var root = editor.OriginalRoot;
-            foreach (var node in root.DescendantNodes()
+            foreach (var node in editor.OriginalRoot.DescendantNodes()
                 .OfType<AttributeSyntax>()
                 .Where(attribute =>
                     attribute.Name is IdentifierNameSyntax &&
