@@ -26,7 +26,8 @@ namespace NUnit3Migration
         {
             new TestCaseAttributeProcessor(),
             new AssertProcessor(),
-            new ExpectedExceptionAttributeProcessor()
+            new ExpectedExceptionAttributeProcessor(),
+            new TestCaseSourceAttributeProcessor()
         };
 
         private async Task Run(string path)

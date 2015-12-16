@@ -91,6 +91,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Processors\TestCaseSourceAttributeProcessor.cs" />
     <Compile Include="Processors\AssertProcessor.cs" />
     <Compile Include="Processors\ExpectedExceptionAttributeProcessor.cs" />
     <Compile Include="Processors\IProcessor.cs" />
