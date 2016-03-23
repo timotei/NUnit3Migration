@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace NUnit3Migration
@@ -42,32 +43,47 @@ namespace NUnit3Migration
                 {
                     Console.WriteLine($"Processing {fsEntry} ...");
                     var originalStr = File.ReadAllText(fsEntry);
-
-                    File.WriteAllText(fsEntry, await Process(_syntaxNodeProcessors, originalStr));
+                    var encoding = GetEncoding(fsEntry);
+                    File.WriteAllText(fsEntry, await Process(_syntaxNodeProcessors, originalStr), encoding);
                 }
             }
         }
 
+
+        private static Encoding GetEncoding(string filePath)
+        {
+            using (var reader = new StreamReader(File.OpenRead(filePath)))
+            {
+                reader.Peek();
+                return reader.CurrentEncoding;
+            }
+        }
         public static async Task<string> Process(IEnumerable<IProcessor> processors, string inputSource)
         {
-            var workspace = new AdhocWorkspace();
-
-            string projName = "NewProject";
-            var projectId = ProjectId.CreateNewId();
-            var versionStamp = VersionStamp.Create();
-            var projectInfo = ProjectInfo.Create(projectId, versionStamp, projName, projName, LanguageNames.CSharp);
-            var newProject = workspace.AddProject(projectInfo);
-            workspace.AddDocument(newProject.Id, "NewFile.cs", SourceText.From(inputSource));
-
-            var document = workspace.CurrentSolution.Projects.First().Documents.First();
-            DocumentEditor editor = await DocumentEditor.CreateAsync(document);
-
-            foreach (var processor in processors)
+            try
             {
-                processor.Process(editor);
-            }
+                var workspace = new AdhocWorkspace();
 
-            return (await editor.GetChangedDocument().GetTextAsync()).ToString();
+                string projName = "NewProject";
+                var projectId = ProjectId.CreateNewId();
+                var versionStamp = VersionStamp.Create();
+                var projectInfo = ProjectInfo.Create(projectId, versionStamp, projName, projName, LanguageNames.CSharp);
+                var newProject = workspace.AddProject(projectInfo);
+                var document = workspace.AddDocument(newProject.Id, "NewFile.cs", SourceText.From(inputSource));
+                DocumentEditor editor = await DocumentEditor.CreateAsync(document);
+
+                foreach (var processor in processors)
+                {
+                    processor.Process(editor);
+                }
+
+                return (await editor.GetChangedDocument().GetTextAsync()).ToString();
+            }
+            catch (Exception e)
+            {
+                Console.Error.WriteLine(e.Message);
+                return inputSource;
+            }
         }
     }
 }
