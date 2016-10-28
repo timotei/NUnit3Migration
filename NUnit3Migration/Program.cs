@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace NUnit3Migration
@@ -52,12 +53,9 @@ namespace NUnit3Migration
 
         private static Encoding GetEncoding(string filePath)
         {
-            using (var reader = new StreamReader(File.OpenRead(filePath)))
-            {
-                reader.Peek();
-                return reader.CurrentEncoding;
-            }
+            return FileEncodindDetector.GetEncoding(filePath);
         }
+
         public static async Task<string> Process(IEnumerable<IProcessor> processors, string inputSource)
         {
             try
