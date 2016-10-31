@@ -91,7 +91,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FileEncodindDetector.cs" />
+    <Compile Include="FileEncodingDetector.cs" />
     <Compile Include="Processors\TestCaseSourceAttributeProcessor.cs" />
     <Compile Include="Processors\AssertProcessor.cs" />
     <Compile Include="Processors\ExpectedExceptionAttributeProcessor.cs" />

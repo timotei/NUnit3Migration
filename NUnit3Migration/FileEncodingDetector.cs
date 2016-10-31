@@ -4,7 +4,7 @@ using System.Text;
 
 namespace NUnit3Migration
 {
-    static class FileEncodindDetector
+    static class FileEncodingDetector
     {
         private static readonly byte[] Utf8Bom = new UTF8Encoding(true).GetPreamble();
 

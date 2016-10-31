@@ -53,7 +53,7 @@ namespace NUnit3Migration
 
         private static Encoding GetEncoding(string filePath)
         {
-            return FileEncodindDetector.GetEncoding(filePath);
+            return FileEncodingDetector.GetEncoding(filePath);
         }
 
         public static async Task<string> Process(IEnumerable<IProcessor> processors, string inputSource)
