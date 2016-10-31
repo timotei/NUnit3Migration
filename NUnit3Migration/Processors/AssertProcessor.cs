@@ -17,12 +17,12 @@ namespace NUnit3Migration.Processors
                 if (expressionString == "Assert.IsNullOrEmpty" ||
                     expressionString == "Assert.IsNotNullOrEmpty")
                 {
-                    HandleAssertNullOrEmpty(editor, expressionString);
+                    HandleAssertNullOrEmpty(editor, node, expressionString);
                 }
             }
         }
         
-        private void HandleAssertNullOrEmpty(DocumentEditor editor, string expressionString)
+        private void HandleAssertNullOrEmpty(DocumentEditor editor, InvocationExpressionSyntax node, string expressionString)
         {
             var expression = SyntaxFactory.MemberAccessExpression(
                     SyntaxKind.SimpleMemberAccessExpression,
